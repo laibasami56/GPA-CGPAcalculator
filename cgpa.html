@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1>CGPA Calculator</h1>
+    </div>
+    <div class="header-right">
+        <a href="index.html" class="home-btn">🏠 Home</a>
+    </div>
+</header>
+
+<main>
+    <section class="box">
+        <h2>CGPA Calculator</h2>
+
+        <div class="input-row">
+            <input type="number" id="semesterGPA" placeholder="Semester GPA" step="0.01">
+            <input type="number" id="semesterCredits" placeholder="Credit Hours" min="1">
+            <button id="addSemester" class="add-btn">Add</button>
+        </div>
+
+        <table id="semesterTable">
+            <thead>
+                <tr>
+                    <th>Semester GPA</th>
+                    <th>Credits</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <button id="calcCGPA" class="calc-btn">Calculate CGPA</button>
+        <p id="cgpaResult" class="result-box"></p>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 GPA/CGPA Project</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
