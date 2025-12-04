@@ -1,6 +1,5 @@
 
 
-// ===========================
 // GPA CALCULATOR
 // ===========================
 const addCourseBtn = document.getElementById('addCourse');
@@ -8,37 +7,66 @@ const courseTableBody = document.querySelector('#courseTable tbody');
 const calcGPA = document.getElementById('calcGPA');
 const gpaResult = document.getElementById('gpaResult');
 
+// ===== Duplicate Check Function =====
+function isCourseExists(name) {
+    const rows = courseTableBody.querySelectorAll("tr");
+    for (let row of rows) {
+        const existingName = row.cells[0].textContent.trim().toLowerCase();
+        if (existingName === name.trim().toLowerCase()) {
+            return true; // course already exists
+        }
+    }
+    return false;
+}
+
 if(addCourseBtn){
     addCourseBtn.addEventListener('click', () => {
-        const courseName = document.getElementById('courseName').value;
+        const courseName = document.getElementById('courseName').value.trim();
         const creditHours = document.getElementById('creditHours').value;
         const grade = document.getElementById('grade').value;
 
-        if(courseName && creditHours && grade){
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${courseName}</td>
-                <td>${creditHours}</td>
-                <td>${grade}</td>
-                <td><button class="remove-btn">❌</button></td>
-            `;
-            courseTableBody.appendChild(tr);
-
-            // remove row
-            tr.querySelector('.remove-btn').addEventListener('click', () => {
-                tr.remove();
-            });
-
-            // clear inputs
-            document.getElementById('courseName').value = '';
-            document.getElementById('creditHours').value = '';
-            document.getElementById('grade').value = '';
-        } else {
+        // empty validation
+        if(!courseName || !creditHours || !grade){
             alert('Please fill all fields!');
+            return;
         }
+
+        // CREDIT HOURS VALIDATION (1 to 4)
+        const ch = parseFloat(creditHours);
+        if (ch < 1 || ch > 4) {
+            alert("Credit hours must be between 1 and 4!");
+            return;
+        }
+
+        // DUPLICATE COURSE VALIDATION
+        if (isCourseExists(courseName)) {
+            alert("This course is already added!");
+            return;
+        }
+
+        // Add course row
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${courseName}</td>
+            <td>${creditHours}</td>
+            <td>${grade}</td>
+            <td><button class="remove-btn">❌</button></td>
+        `;
+        courseTableBody.appendChild(tr);
+
+        // remove row
+        tr.querySelector('.remove-btn').addEventListener('click', () => {
+            tr.remove();
+        });
+
+        // clear fields
+        document.getElementById('courseName').value = '';
+        document.getElementById('creditHours').value = '';
+        document.getElementById('grade').value = '';
     });
 }
 
+// CALCULATE GPA
 if(calcGPA){
     calcGPA.addEventListener('click', () => {
         let totalPoints = 0;
@@ -53,6 +81,7 @@ if(calcGPA){
         rows.forEach(row => {
             const credits = parseFloat(row.cells[1].textContent);
             const gradePoint = parseFloat(row.cells[2].textContent);
+
             totalPoints += credits * gradePoint;
             totalCredits += credits;
         });
@@ -120,4 +149,5 @@ if(calcCGPA){
         cgpaResult.textContent = `Your CGPA: ${cgpa}`;
     });
 }
+
 
